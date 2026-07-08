@@ -1,12 +1,13 @@
 "use client";
 
-import { Bell, Zap, ZapOff, Wifi, WifiOff } from "lucide-react";
+import { Bell, Zap, ZapOff, Wifi, WifiOff, LogOut } from "lucide-react";
 import { useTelemetry } from "@/components/providers/TelemetryProvider";
 import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function Navbar() {
-  const { isSimulating, setIsSimulating, alerts, deviceStatus } = useTelemetry();
+  const { isSimulating, setIsSimulating, alerts, deviceStatus, userRole, setUserRole } = useTelemetry();
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [showSimTooltip, setShowSimTooltip] = useState(false);
@@ -37,12 +38,12 @@ export function Navbar() {
   const isConnected = deviceStatus.esp32Online;
 
   return (
-    <header className="flex items-center justify-between w-full h-24 pt-6 pb-2 px-8">
+    <header className="flex flex-col md:flex-row items-start md:items-center justify-between w-full h-auto py-4 md:h-24 md:pt-6 md:pb-2 px-4 md:px-8 gap-4 md:gap-0">
       {/* Left: Greeting + Date */}
       <div className="flex flex-col">
-        <h1 className="text-2xl font-bold tracking-tight text-[#1c1c1a]">Hello, Operator!</h1>
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900">Hello, Operator!</h1>
         <div className="flex items-center gap-3 mt-1">
-          <p className="text-[#78716c] text-sm">{date} · {time}</p>
+          <p className="text-slate-500 text-xs md:text-sm">{date} · {time}</p>
           <span className={cn(
             "inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full",
             isConnected ? "bg-green-50 text-green-700" : "bg-zinc-100 text-zinc-500"
@@ -52,14 +53,27 @@ export function Navbar() {
               : <><WifiOff className="w-3 h-3" /> Offline</>
             }
           </span>
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 uppercase tracking-wider">
+            {userRole}
+          </span>
         </div>
       </div>
 
       {/* Right: Action Buttons */}
       <div className="flex items-center gap-4">
+      
+        {/* Log Out */}
+        <Link
+          href="/login"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 text-xs font-semibold rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors"
+        >
+          <LogOut className="w-4 h-4" />
+          Log out
+        </Link>
 
-        {/* Simulation Toggle */}
-        <div className="relative">
+        {/* Simulation Toggle - Admin Only */}
+        {userRole === "admin" && (
+          <div className="relative">
           <button
             onClick={() => setIsSimulating(!isSimulating)}
             onMouseEnter={() => setShowSimTooltip(true)}
@@ -67,8 +81,8 @@ export function Navbar() {
             className={cn(
               "flex items-center justify-center w-12 h-12 rounded-full shadow-sm transition-all duration-300 relative",
               isSimulating
-                ? "bg-[#355441] text-white hover:bg-[#284032]"
-                : "bg-white text-zinc-400 hover:text-[#355441]"
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-white text-zinc-400 hover:text-blue-600"
             )}
           >
             {isSimulating ? <Zap className="w-5 h-5" /> : <ZapOff className="w-5 h-5" />}
@@ -76,12 +90,13 @@ export function Navbar() {
             {isSimulating && <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-green-400 rounded-full" />}
           </button>
           {showSimTooltip && (
-            <div className="absolute top-14 right-0 bg-[#1c1c1a] text-white text-xs font-medium rounded-xl px-3 py-2 whitespace-nowrap shadow-lg z-50">
+            <div className="absolute top-14 right-0 bg-white border border-slate-200 text-slate-900 text-xs font-medium rounded-xl px-3 py-2 whitespace-nowrap shadow-xl z-50">
               {isSimulating ? "Simulation ON — click to stop" : "Simulation OFF — click to start"}
-              <div className="absolute -top-1.5 right-4 w-3 h-3 bg-[#1c1c1a] rotate-45" />
+              <div className="absolute -top-1.5 right-4 w-3 h-3 bg-white border-l border-t border-slate-200 rotate-45" />
             </div>
           )}
-        </div>
+          </div>
+        )}
 
         {/* Bell / Notifications */}
         <div className="relative" ref={notifRef}>
@@ -89,7 +104,7 @@ export function Navbar() {
             onClick={() => setShowNotifications(!showNotifications)}
             className={cn(
               "flex items-center justify-center w-12 h-12 rounded-full shadow-sm transition-all duration-300 relative",
-              showNotifications ? "bg-[#355441] text-white" : "bg-white text-zinc-400 hover:text-[#355441]"
+              showNotifications ? "bg-blue-600 text-white" : "bg-white text-zinc-400 hover:text-blue-600"
             )}
           >
             <Bell className="w-5 h-5" />

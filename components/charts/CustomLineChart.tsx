@@ -50,8 +50,8 @@ export function CustomLineChart({
             content={({ active, payload, label: timeLabel }) => {
               if (active && payload && payload.length) {
                 return (
-                  <div className="bg-[#1c1c1a] text-white p-3 rounded-xl shadow-lg text-sm">
-                    <p className="text-zinc-400 mb-1">{timeLabel}</p>
+                  <div className="bg-white text-slate-900 p-3 rounded-xl shadow-xl border border-slate-200 text-sm">
+                    <p className="text-slate-500 mb-1">{timeLabel}</p>
                     <p className="font-bold">
                       {label}: {Number(payload[0].value).toFixed(1)}
                     </p>

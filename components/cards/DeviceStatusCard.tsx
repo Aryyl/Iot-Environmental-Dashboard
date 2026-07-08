@@ -18,16 +18,16 @@ function Row({ icon: Icon, label, value, status }: {
   return (
     <div className="flex items-center justify-between py-3 border-b border-zinc-100 last:border-0">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-[#f4f3ed] rounded-full flex items-center justify-center">
-          <Icon className="w-4 h-4 text-[#355441]" />
+        <div className="w-8 h-8 bg-blue-50/50 rounded-full flex items-center justify-center">
+          <Icon className="w-4 h-4 text-blue-600" />
         </div>
-        <p className="text-sm font-medium text-[#78716c]">{label}</p>
+        <p className="text-sm font-medium text-slate-600">{label}</p>
       </div>
       <div className="text-right">
         {status ? (
           <StatusBadge status={status} size="sm" />
         ) : (
-          <p className="text-sm font-semibold text-[#1c1c1a]">{value}</p>
+          <p className="text-sm font-semibold text-slate-900">{value}</p>
         )}
       </div>
     </div>
@@ -40,9 +40,9 @@ export function DeviceStatusCard({ deviceStatus }: DeviceStatusCardProps) {
   const lastUploadStr = secondsAgo < 60 ? `${secondsAgo}s ago` : `${Math.floor(secondsAgo / 60)}m ago`;
 
   return (
-    <div className="bg-white rounded-[2rem] p-6 shadow-sm flex flex-col h-full">
+    <div className="bg-white rounded-[2rem] p-6 shadow-sm flex flex-col h-full border border-slate-100">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-[#1c1c1a] font-bold text-base">Device Status</h3>
+        <h3 className="text-slate-900 font-bold text-base">Device Status</h3>
         <StatusBadge status={deviceStatus.esp32Online ? "online" : "offline"} />
       </div>
       <div className="flex-1 flex flex-col">

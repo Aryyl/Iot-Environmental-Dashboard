@@ -9,9 +9,9 @@ import { TimeFilter } from "@/components/common/TimeFilter";
 const charts = [
   { key: "temperature", label: "Temperature",          unit: "°C",  color: "#e07a5f", icon: Thermometer, variant: "bg-white" },
   { key: "humidity",    label: "Humidity",             unit: "%",   color: "#3b82f6", icon: Droplets,    variant: "bg-white" },
-  { key: "pressure",    label: "Atmospheric Pressure", unit: "hPa", color: "#355441", icon: Wind,        variant: "bg-[#fcf7f1]" },
+  { key: "pressure",    label: "Atmospheric Pressure", unit: "hPa", color: "#2563eb", icon: Wind,        variant: "bg-white border border-slate-100" },
   { key: "altitude",    label: "Altitude",             unit: "m",   color: "#8b5cf6", icon: Mountain,    variant: "bg-white" },
-  { key: "distance",    label: "Distance",             unit: "cm",  color: "#f59e0b", icon: Ruler,       variant: "bg-[#5f7564]" },
+  { key: "distance",    label: "Water Level",             unit: "cm",  color: "#f59e0b", icon: Ruler,       variant: "bg-blue-600" },
 ] as const;
 
 export default function AnalyticsPage() {
@@ -32,8 +32,8 @@ export default function AnalyticsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-[#1c1c1a]">Historical Analytics</h2>
-          <p className="text-[#78716c] text-sm mt-1">Explore trends and patterns across all sensors.</p>
+          <h2 className="text-2xl font-bold text-slate-900">Historical Analytics</h2>
+          <p className="text-slate-500 text-sm mt-1">Explore trends and patterns across all sensors.</p>
         </div>
         <TimeFilter value={timeFilter} onChange={setTimeFilter} />
       </div>
@@ -41,7 +41,7 @@ export default function AnalyticsPage() {
       {/* Charts Grid — 2 col up top, full width pressure, remaining 2 col */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {charts.map((chart) => {
-          const isDark = chart.variant === "bg-[#5f7564]";
+          const isDark = chart.variant === "bg-blue-600";
           const Icon = chart.icon;
           return (
             <div
@@ -49,12 +49,12 @@ export default function AnalyticsPage() {
               className={`${chart.variant} rounded-[2rem] p-6 shadow-sm min-h-[320px] flex flex-col transition-shadow hover:shadow-md ${chart.key === "pressure" ? "lg:col-span-2" : ""}`}
             >
               <div className="flex items-center gap-3 mb-5">
-                <div className={`p-2 rounded-full ${isDark ? "bg-white/20 text-white" : "bg-[#e1eae2] text-[#355441]"}`}>
+                <div className={`p-2 rounded-full ${isDark ? "bg-white/20 text-white" : "bg-blue-50 text-blue-600"}`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className={`font-bold text-sm ${isDark ? "text-white" : "text-[#1c1c1a]"}`}>{chart.label}</h3>
-                  <p className={`text-xs ${isDark ? "text-white/60" : "text-[#78716c]"}`}>Measured in {chart.unit}</p>
+                  <h3 className={`font-bold text-sm ${isDark ? "text-white" : "text-slate-900"}`}>{chart.label}</h3>
+                  <p className={`text-xs ${isDark ? "text-white/60" : "text-slate-500"}`}>Measured in {chart.unit}</p>
                 </div>
               </div>
               <div className="flex-1">

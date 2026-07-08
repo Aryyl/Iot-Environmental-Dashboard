@@ -9,7 +9,8 @@ const alertTypeConfig = {
   HIGH_TEMPERATURE:      { label: "High Temperature",      icon: Thermometer },
   HIGH_HUMIDITY:         { label: "High Humidity",         icon: Droplets },
   RAPID_PRESSURE_CHANGE: { label: "Rapid Pressure Change", icon: Wind },
-  OBJECT_TOO_CLOSE:      { label: "Object Too Close",      icon: Ruler },
+  HIGH_WATER_LEVEL:      { label: "High Water Level",      icon: Ruler },
+  RAPID_WATER_RISE:      { label: "Rapid Water Rise",      icon: AlertTriangle },
   SENSOR_OFFLINE:        { label: "Sensor Offline",        icon: WifiOff },
 } as const;
 
@@ -61,8 +62,8 @@ export default function AlertsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[#1c1c1a]">Active Alerts</h2>
-          <p className="text-[#78716c] text-sm mt-1">Real-time notifications from your IoT sensors.</p>
+          <h2 className="text-2xl font-bold text-slate-900">Active Alerts</h2>
+          <p className="text-slate-500 text-sm mt-1">Real-time notifications from your IoT sensors.</p>
         </div>
         {alerts.length > 0 && (
           <button

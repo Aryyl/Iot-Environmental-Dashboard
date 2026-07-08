@@ -5,9 +5,9 @@ import { useTelemetry } from "@/components/providers/TelemetryProvider";
 import { SensorCard } from "@/components/cards/SensorCard";
 import { DeviceStatusCard } from "@/components/cards/DeviceStatusCard";
 import { ComfortScoreCard } from "@/components/cards/ComfortScoreCard";
-import { CircularGauge } from "@/components/gauges/CircularGauge";
 import { CustomLineChart } from "@/components/charts/CustomLineChart";
 import { AlertPanel } from "@/components/alerts/AlertPanel";
+import EcoMap from "@/components/Map";
 
 export default function DashboardHome() {
   const { data, history, deviceStatus } = useTelemetry();
@@ -35,7 +35,7 @@ export default function DashboardHome() {
       {/* Row 1: 5 Sensor Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         <SensorCard
-          title="Live Temperature"
+          title="Temperature"
           value={data.temperature.toFixed(1)}
           unit="°C"
           icon={Thermometer}
@@ -43,10 +43,9 @@ export default function DashboardHome() {
           delta={getDelta(data.temperature, prev?.temperature)}
           status={data.temperature > 35 ? "warning" : "normal"}
           historyData={history.map((h) => h.temperature)}
-          variant="default"
         />
         <SensorCard
-          title="Live Humidity"
+          title="Humidity"
           value={data.humidity.toFixed(0)}
           unit="%"
           icon={Droplets}
@@ -54,7 +53,6 @@ export default function DashboardHome() {
           delta={getDelta(data.humidity, prev?.humidity)}
           status={data.humidity > 80 ? "warning" : "normal"}
           historyData={history.map((h) => h.humidity)}
-          variant="default"
         />
         <SensorCard
           title="Atmospheric Pressure"
@@ -65,7 +63,7 @@ export default function DashboardHome() {
           delta={getDelta(data.pressure, prev?.pressure)}
           status="normal"
           historyData={history.map((h) => h.pressure)}
-          variant="sand"
+          variant="light"
         />
         <SensorCard
           title="Altitude"
@@ -76,10 +74,9 @@ export default function DashboardHome() {
           delta={getDelta(data.altitude, prev?.altitude)}
           status="normal"
           historyData={history.map((h) => h.altitude)}
-          variant="default"
         />
         <SensorCard
-          title="Distance"
+          title="Water Level"
           value={data.distance.toFixed(0)}
           unit="cm"
           icon={Ruler}
@@ -87,7 +84,7 @@ export default function DashboardHome() {
           delta={getDelta(data.distance, prev?.distance)}
           status={data.distance < 20 ? "critical" : data.distance < 40 ? "warning" : "normal"}
           historyData={history.map((h) => h.distance)}
-          variant="dark"
+          variant="primary"
           invertTrend={true}
         />
       </div>
@@ -114,25 +111,14 @@ export default function DashboardHome() {
         </div>
       </div>
 
-      {/* Row 3: Humidity Gauge + Distance Gauge + Alert Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <CircularGauge
-          label="Humidity"
-          value={data.humidity}
-          min={0}
-          max={100}
-          unit="%"
-          color={data.humidity > 80 ? "#f59e0b" : "#355441"}
-        />
-        <CircularGauge
-          label="Distance"
-          value={data.distance}
-          min={0}
-          max={400}
-          unit="cm"
-          color={data.distance < 20 ? "#ef4444" : data.distance < 40 ? "#f59e0b" : "#3b82f6"}
-        />
+      {/* Row 3: Alert Panel */}
+      <div className="mt-2">
         <AlertPanel />
+      </div>
+
+      <div className="mt-6">
+        <h3 className="text-slate-900 font-bold text-base mb-4">Device Location</h3>
+        <EcoMap />
       </div>
 
     </div>

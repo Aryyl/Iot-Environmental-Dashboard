@@ -20,7 +20,7 @@ export interface DeviceStatus {
 
 export interface Alert {
   id: string;
-  type: "HIGH_TEMPERATURE" | "HIGH_HUMIDITY" | "RAPID_PRESSURE_CHANGE" | "OBJECT_TOO_CLOSE" | "SENSOR_OFFLINE";
+  type: "HIGH_TEMPERATURE" | "HIGH_HUMIDITY" | "RAPID_PRESSURE_CHANGE" | "HIGH_WATER_LEVEL" | "RAPID_WATER_RISE" | "SENSOR_OFFLINE";
   severity: "critical" | "warning" | "info";
   message: string;
   timestamp: string;
@@ -40,7 +40,9 @@ interface TelemetryContextType {
   deviceStatus: DeviceStatus;
   settings: DashboardSettings;
   isSimulating: boolean;
+  userRole: "admin" | "user";
   setIsSimulating: (val: boolean) => void;
+  setUserRole: (role: "admin" | "user") => void;
   setSettings: (s: DashboardSettings) => void;
   addAlert: (alert: Omit<Alert, "id" | "timestamp">) => void;
   clearAlerts: () => void;
@@ -106,12 +108,22 @@ function generateAlert(
     };
   }
 
-  // Object too close
-  if (data.distance < settings.distanceThreshold && roll < 0.5) {
+  // Rapid Water Rise
+  const waterRise = prevData.distance - data.distance; // distance decreasing = water rising
+  if (waterRise > 4) {
     return {
-      type: "OBJECT_TOO_CLOSE",
-      severity: data.distance < 10 ? "critical" : "warning",
-      message: `Object detected at ${data.distance.toFixed(1)} cm, below safe threshold of ${settings.distanceThreshold} cm.`,
+      type: "RAPID_WATER_RISE",
+      severity: "critical",
+      message: `Emergency: Water level is rising rapidly! (Rose by ${waterRise.toFixed(1)} cm).`,
+    };
+  }
+
+  // High Water Level
+  if (data.distance < settings.distanceThreshold) {
+    return {
+      type: "HIGH_WATER_LEVEL",
+      severity: data.distance < (settings.distanceThreshold / 2) ? "critical" : "warning",
+      message: `High water level detected! Gap is only ${data.distance.toFixed(1)} cm from sensor.`,
     };
   }
 
@@ -125,6 +137,7 @@ export function TelemetryProvider({ children }: { children: React.ReactNode }) {
   const [deviceStatus, setDeviceStatus] = useState<DeviceStatus>(defaultDeviceStatus);
   const [settings, setSettings] = useState<DashboardSettings>(defaultSettings);
   const [isSimulating, setIsSimulating] = useState(true);
+  const [userRole, setUserRole] = useState<"admin" | "user">("admin");
 
   // Pre-fill history with dummy data for initial charts
   useEffect(() => {
@@ -159,9 +172,12 @@ export function TelemetryProvider({ children }: { children: React.ReactNode }) {
           return newHistory;
         });
 
-        // Smart alert generation based on thresholds
+        // Smart alert generation based on thresholds (DISABLED DURING SIMULATION)
+        /*
         const possibleAlert = generateAlert(newData, prev, settings);
-        if (possibleAlert && Math.random() > 0.7) {
+        const isWaterAlert = possibleAlert?.type === "RAPID_WATER_RISE" || possibleAlert?.type === "HIGH_WATER_LEVEL";
+        
+        if (possibleAlert && (isWaterAlert || Math.random() > 0.7)) {
           setAlerts((prevAlerts) => {
             const newAlert: Alert = {
               ...possibleAlert,
@@ -172,6 +188,7 @@ export function TelemetryProvider({ children }: { children: React.ReactNode }) {
             return updated.slice(0, 20); // keep last 20
           });
         }
+        */
 
         // Update device status
         setDeviceStatus((prev) => ({
@@ -205,7 +222,9 @@ export function TelemetryProvider({ children }: { children: React.ReactNode }) {
         deviceStatus,
         settings,
         isSimulating,
+        userRole,
         setIsSimulating,
+        setUserRole,
         setSettings,
         addAlert,
         clearAlerts,

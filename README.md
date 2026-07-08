@@ -88,9 +88,6 @@ Administrators have access to a dedicated **Device Details** page (`/dashboard/d
 - ThingSpeak Cloud synchronization status.
 - A **Raw Telemetry Stream** terminal that visualizes the raw JSON payloads arriving from the hardware daemon.
 
-## ⚡ Simulation Mode
-If you don't have the ESP32 hardware set up yet, log in as an **Administrator** and click the **Lightning Bolt** icon in the top right of the dashboard navigation bar to toggle Simulation Mode. This will inject realistic mock data into the telemetry provider, allowing you to preview charts, alerts, and gauges exactly as they would behave in the real world.
-
 ## 🤝 Project Sponsorship & Team
 This project was carried out under the Technology Innovation Hub (**TIH**) at **IIT Guwahati**.
 

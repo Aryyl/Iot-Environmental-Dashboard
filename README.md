@@ -11,12 +11,12 @@ A modern, highly responsive Next.js web application for monitoring real-time tel
   - **Resident / User View**: Read-only access to vital safety information and alerts.
   - **Administrator View**: Full control over simulation toggles, hardware settings, and critical thresholds.
 - **Dynamic Charts**: Interactive time-series line charts (Recharts) for historical analysis (1h, 24h, 7d, 30d).
-- **GSAP Scroll Landing Page**: A cinematic, high-performance scroll-driven Canvas sequence landing page featuring Lenis smooth scrolling and GPU-accelerated frame rendering.
+- **GSAP Scroll Landing Page**: A cinematic, high-performance scroll-driven slideshow featuring smooth crossfade transitions between localized flood imagery, integrated with Lenis smooth scrolling and GSAP.
 - **Mobile-First Responsive Design**: 
   - Dynamic App-style **Bottom Navigation Bar** on mobile devices.
   - Responsive grids, scalable typography, and collapsible headers.
 - **Live Simulation Mode**: Built-in mock data generator for testing the UI without hardware connected.
-- **Persistent Local Authentication**: A fully functional Signup and Login system using `localStorage` to persist custom accounts and login sessions.
+- **Persistent Local Authentication**: A fully functional Signup and Login system using `localStorage` to persist custom accounts and login sessions. Styled with a premium glassmorphic UI, centered cards, and customized blurred background overlays.
 
 ## 🛠️ Tech Stack
 

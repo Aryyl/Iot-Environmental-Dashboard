@@ -8,7 +8,7 @@ import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 
 import { LandingNav } from "@/components/landing/LandingNav";
-import { CanvasSequence } from "@/components/landing/CanvasSequence";
+import { BackgroundSlideshow } from "@/components/landing/BackgroundSlideshow";
 import { ScrollytellingSections } from "@/components/landing/ScrollytellingSections";
 
 // Register GSAP plugins once
@@ -22,7 +22,7 @@ if (typeof window !== "undefined") {
  *
  * Responsible for:
  * 1. Initialising Lenis smooth scroll and wiring it to GSAP's RAF loop.
- * 2. Rendering the fixed-position canvas (image sequence background).
+ * 2. Rendering the fixed-position background image slideshow.
  * 3. Rendering the scrollable overlay sections.
  * 4. Rendering the navigation bar.
  */
@@ -53,14 +53,14 @@ export function CanvasSequencePage() {
       {/* ── Fixed nav ──────────────────────────────────────────── */}
       <LandingNav />
 
-      {/* ── Fixed canvas background ────────────────────────────── */}
-      <CanvasSequence />
+      {/* ── Fixed background slideshow ──────────────────────────── */}
+      <BackgroundSlideshow />
 
       {/*
        * ── Scrollable content ─────────────────────────────────────
        * This div is the actual scroll container. Its height drives
-       * the ScrollTrigger progress from 0 → 1. The canvas responds
-       * to that progress to advance the image sequence.
+       * the scroll progress. The background responds to that progress
+       * to crossfade between images.
        */}
       <main className="relative" style={{ zIndex: 10 }}>
         <ScrollytellingSections />

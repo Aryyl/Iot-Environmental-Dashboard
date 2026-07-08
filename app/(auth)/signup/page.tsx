@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Droplets, ArrowLeft, AlertCircle, CheckCircle2 } from "lucide-react";
 import { useTelemetry } from "@/components/providers/TelemetryProvider";
+import bgImage from "@/assests/mcms.jpg";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -55,30 +57,37 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
-      {/* Decorative background blur */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-[400px] bg-blue-400/20 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors mb-8">
-          <ArrowLeft className="w-4 h-4" />
-          Back to home
-        </Link>
-        <div className="flex justify-center">
-          <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-600/20">
-            <Droplets className="w-6 h-6" />
-          </div>
-        </div>
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900">
-          Create an account
-        </h2>
-        <p className="mt-2 text-center text-sm text-slate-600">
-          Join FloodEye to start monitoring.
-        </p>
+    <div className="h-screen max-h-screen overflow-hidden flex items-center justify-center p-4 sm:p-6 lg:p-8 relative">
+      {/* Blurred Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={bgImage}
+          alt="Background"
+          fill
+          className="object-cover object-[center_20%] blur-[3.4px] scale-110"
+          priority
+        />
+        {/* Dark overlay for better text contrast */}
+        <div className="absolute inset-0 bg-slate-900/40" />
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
-        <div className="bg-white py-8 px-4 shadow-xl shadow-slate-200/50 border border-slate-200 sm:rounded-3xl sm:px-10">
+      <Link href="/" className="absolute top-6 left-6 z-20 inline-flex items-center gap-2 text-sm font-medium text-slate-200 hover:text-white transition-colors drop-shadow-md">
+        <ArrowLeft className="w-4 h-4" />
+        Back to home
+      </Link>
+
+      <div className="w-full max-w-md bg-white/90 backdrop-blur-xl py-8 px-6 sm:px-10 shadow-2xl shadow-black/20 border border-white/40 rounded-3xl z-10 relative">
+        <div className="flex flex-col items-center mb-6">
+          <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-600/20 mb-4">
+            <Droplets className="w-6 h-6" />
+          </div>
+          <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900">
+            Create an account
+          </h2>
+          <p className="mt-2 text-center text-sm text-slate-600">
+            Join FloodEye to start monitoring.
+          </p>
+        </div>
           {success ? (
             <div className="flex flex-col items-center justify-center py-8 text-center animate-in fade-in zoom-in duration-500">
               <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
@@ -158,13 +167,10 @@ export default function SignupPage() {
 
           {!success && (
             <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="bg-white px-2 text-slate-500">Already have an account?</span>
-                </div>
+              <div className="flex items-center text-sm">
+                <div className="flex-grow border-t border-slate-200" />
+                <span className="flex-shrink mx-3 text-slate-500 font-medium">Already have an account?</span>
+                <div className="flex-grow border-t border-slate-200" />
               </div>
 
               <div className="mt-6">
@@ -179,6 +185,5 @@ export default function SignupPage() {
           )}
         </div>
       </div>
-    </div>
   );
 }

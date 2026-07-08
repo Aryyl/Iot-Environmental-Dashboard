@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Droplets, ArrowLeft, AlertCircle, CheckCircle2 } from "lucide-react";
 import { useTelemetry } from "@/components/providers/TelemetryProvider";
-import bgImage from "@/assests/mcms.jpg";
+import bgImage from "@/assests/landpage/PTI06_18_2022_000030B.jpg";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -71,7 +71,10 @@ export default function SignupPage() {
         <div className="absolute inset-0 bg-slate-900/40" />
       </div>
 
-      <Link href="/" className="absolute top-6 left-6 z-20 inline-flex items-center gap-2 text-sm font-medium text-slate-200 hover:text-white transition-colors drop-shadow-md">
+      <Link 
+        href="/" 
+        className="absolute top-6 left-6 z-20 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-200 bg-white/10 hover:bg-white/20 hover:text-white backdrop-blur-md border border-white/20 hover:border-white/30 rounded-full transition-all duration-200 shadow-lg shadow-black/10 hover:scale-[1.02] active:scale-95"
+      >
         <ArrowLeft className="w-4 h-4" />
         Back to home
       </Link>

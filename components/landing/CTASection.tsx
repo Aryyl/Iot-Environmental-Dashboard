@@ -49,7 +49,7 @@ export function LandingFooter() {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">A</div>
-          <span className="font-semibold text-white text-sm">AquaSense IoT Dashboard</span>
+          <span className="font-semibold text-white text-sm">FloodEye IoT Dashboard</span>
         </div>
         <p className="text-xs text-[#7aaabe] text-center">
           Built with Next.js, React, TypeScript, Tailwind CSS & Recharts. Open source under MIT.

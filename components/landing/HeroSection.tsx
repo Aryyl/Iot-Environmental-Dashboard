@@ -208,7 +208,7 @@ export function HeroSection() {
 
         {/* Subtitle */}
         <p className="text-base md:text-lg text-[#4a6a7a] leading-relaxed mb-10 max-w-lg">
-          AquaSense connects your ESP32 to a beautiful real-time dashboard. Track temperature, humidity, pressure, altitude, and distance — all live, all at a glance.
+          FloodEye connects your ESP32 to a beautiful real-time dashboard. Track temperature, humidity, pressure, altitude, and distance — all live, all at a glance.
         </p>
 
         {/* CTA Buttons */}

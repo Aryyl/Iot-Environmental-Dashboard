@@ -15,7 +15,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "AquaSense — Flood Relief Monitoring",
+  title: "FloodEye — Flood Relief Monitoring",
   description: "Real-time flood monitoring and early warning system powered by ESP32 sensor networks.",
 };
 

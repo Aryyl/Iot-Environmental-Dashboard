@@ -50,7 +50,7 @@ export default function EcoMap() {
             className="rounded-xl overflow-hidden shadow-xl"
           >
             <div className="p-1 min-w-[140px]">
-              <h3 className="font-bold text-slate-900 mb-2 border-b border-slate-100 pb-2">AquaSense Node 1</h3>
+              <h3 className="font-bold text-slate-900 mb-2 border-b border-slate-100 pb-2">FloodEye Node 1</h3>
               <div className="space-y-1.5 text-sm">
                 <p className="flex justify-between">
                   <span className="text-slate-500">Water Level</span>

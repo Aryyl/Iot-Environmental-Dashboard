@@ -3,7 +3,6 @@
 import { Thermometer, Droplets, Wind, Mountain, Ruler } from "lucide-react";
 import { useTelemetry } from "@/components/providers/TelemetryProvider";
 import { SensorCard } from "@/components/cards/SensorCard";
-import { DeviceStatusCard } from "@/components/cards/DeviceStatusCard";
 import { ComfortScoreCard } from "@/components/cards/ComfortScoreCard";
 import { CustomLineChart } from "@/components/charts/CustomLineChart";
 import { AlertPanel } from "@/components/alerts/AlertPanel";
@@ -94,20 +93,19 @@ export default function DashboardHome() {
         {/* Main Chart — 2 cols */}
         <div className="lg:col-span-2 bg-white rounded-[2rem] p-6 shadow-sm flex flex-col min-h-[360px]">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[#1c1c1a] font-bold text-base">Temperature Trend</h3>
+            <h3 className="text-[#1c1c1a] font-bold text-base">Water Level Trend</h3>
             <span className="px-3 py-1 bg-green-50 text-green-700 text-xs font-semibold rounded-full animate-pulse">
               ● Live
             </span>
           </div>
           <div className="flex-1">
-            <CustomLineChart data={chartData} dataKey="temperature" color="#e07a5f" label="Temp (°C)" />
+            <CustomLineChart data={chartData} dataKey="distance" color="#3b82f6" label="Water Level (cm)" />
           </div>
         </div>
 
-        {/* Right column: Comfort Score + Device Status */}
+        {/* Right column: Comfort Score */}
         <div className="flex flex-col gap-6">
           <ComfortScoreCard temperature={data.temperature} humidity={data.humidity} />
-          <DeviceStatusCard deviceStatus={deviceStatus} />
         </div>
       </div>
 

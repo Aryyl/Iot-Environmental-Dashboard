@@ -31,6 +31,7 @@ export interface DashboardSettings {
   tempThreshold: number;   // °C
   humidityThreshold: number; // %
   distanceThreshold: number; // cm (alert when below this)
+  pressureThreshold: number; // hPa
 }
 
 interface TelemetryContextType {
@@ -59,9 +60,10 @@ const defaultData: TelemetryData = {
 
 const defaultSettings: DashboardSettings = {
   refreshInterval: 15,
-  tempThreshold: 35,
-  humidityThreshold: 80,
-  distanceThreshold: 20,
+  tempThreshold: 32,
+  humidityThreshold: 85,
+  distanceThreshold: 100,
+  pressureThreshold: 1005,
 };
 
 const defaultDeviceStatus: DeviceStatus = {
@@ -80,31 +82,30 @@ function generateAlert(
 ): Omit<Alert, "id" | "timestamp"> | null {
   const roll = Math.random();
 
-  // High temperature
+  // High temperature (Fuel)
   if (data.temperature > settings.tempThreshold && roll < 0.4) {
     return {
       type: "HIGH_TEMPERATURE",
-      severity: data.temperature > settings.tempThreshold + 5 ? "critical" : "warning",
-      message: `Temperature is ${data.temperature.toFixed(1)}°C, exceeding threshold of ${settings.tempThreshold}°C.`,
+      severity: data.temperature > settings.tempThreshold + 3 ? "critical" : "warning",
+      message: `High Thermal Energy: Temp is ${data.temperature.toFixed(1)}°C. Increases severity if storm breaks.`,
     };
   }
 
-  // High humidity
+  // High humidity (Saturation)
   if (data.humidity > settings.humidityThreshold && roll < 0.4) {
     return {
       type: "HIGH_HUMIDITY",
-      severity: "warning",
-      message: `Humidity at ${data.humidity.toFixed(0)}%, above the ${settings.humidityThreshold}% threshold.`,
+      severity: data.humidity > 95 ? "critical" : "warning",
+      message: data.humidity > 95 ? `Critical Air Saturation (${data.humidity.toFixed(0)}%): Immediate heavy rain likely.` : `High Humidity: Air is ${data.humidity.toFixed(0)}% saturated.`,
     };
   }
 
-  // Rapid pressure change (>3 hPa in one tick)
-  const pressureDelta = Math.abs(data.pressure - prevData.pressure);
-  if (pressureDelta > 3 && roll < 0.5) {
+  // Low Pressure (Storm Predictor)
+  if (data.pressure < settings.pressureThreshold && roll < 0.4) {
     return {
       type: "RAPID_PRESSURE_CHANGE",
-      severity: "info",
-      message: `Pressure changed rapidly by ${pressureDelta.toFixed(1)} hPa. Possible weather change.`,
+      severity: data.pressure < 995 ? "critical" : "warning",
+      message: data.pressure < 995 ? "Severe Cyclone/Storm Alert: Extreme pressure drop!" : `Low Pressure System: Storm approaching. (${data.pressure.toFixed(1)} hPa)`,
     };
   }
 
@@ -118,12 +119,12 @@ function generateAlert(
     };
   }
 
-  // High Water Level
+  // High Water Level (Physical Risk)
   if (data.distance < settings.distanceThreshold) {
     return {
       type: "HIGH_WATER_LEVEL",
-      severity: data.distance < (settings.distanceThreshold / 2) ? "critical" : "warning",
-      message: `High water level detected! Gap is only ${data.distance.toFixed(1)} cm from sensor.`,
+      severity: data.distance < 30 ? "critical" : "warning",
+      message: data.distance < 30 ? `CRITICAL FLOOD RISK: Water level is breaching! (${data.distance.toFixed(1)} cm from sensor)` : `Flood Warning: Water level rising. (${data.distance.toFixed(1)} cm from sensor)`,
     };
   }
 

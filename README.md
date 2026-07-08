@@ -1,4 +1,4 @@
-# AquaSense: Flood Relief Monitoring Dashboard
+# FloodEye: Flood Relief Monitoring Dashboard
 
 A modern, highly responsive Next.js web application for monitoring real-time telemetry from an ESP32 microcontroller and an array of environmental sensors. Designed specifically for flood relief, early warning, and disaster management.
 
@@ -61,13 +61,29 @@ Make sure you have Node.js (v20 or higher) and npm/pnpm installed on your machin
 
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the cinematic landing page. Click **Login** to enter the dashboard.
 
-## ⚙️ Configuration
+### 🔐 Demo Accounts
+To explore the application's Role-Based Access Control (RBAC), use the following mock credentials when logging in:
 
-Administrators can navigate to the **Settings** page within the application to configure:
-- Critical Water Level Thresholds
-- Emergency Alert Thresholds (Max Temp, Max Humidity, etc.)
-- Data refresh intervals
-- Cloud Sync API Keys (e.g., ThingSpeak integration)
+**Administrator Access** (Full control & diagnostics):
+- Email: `admin@floodeye.com`
+- Password: `admin`
+
+**Resident Access** (Read-only monitoring):
+- Email: `user@floodeye.com`
+- Password: `user`
+
+## ⚙️ Configuration & Scientific Thresholds
+
+Administrators can navigate to the **Settings** page within the application to configure early warning thresholds based on meteorological science:
+- **Atmospheric Pressure**: Drops below `1005 hPa` trigger storm warnings. Extreme drops trigger severe cyclone alerts.
+- **Humidity & Temperature**: High thermal energy combined with >95% saturation triggers immediate heavy rainfall warnings.
+- **Water Level**: Tracks physical river/drain rise in cm. Critical alerts trigger when water approaches the sensor face.
+
+## 📡 Hardware Diagnostics (Admin Only)
+Administrators have access to a dedicated **Device Details** page (`/dashboard/devices`). This secure hub provides:
+- Live ESP32 connection status and RSSI signal strength.
+- ThingSpeak Cloud synchronization status.
+- A **Raw Telemetry Stream** terminal that visualizes the raw JSON payloads arriving from the hardware daemon.
 
 ## ⚡ Simulation Mode
 If you don't have the ESP32 hardware set up yet, log in as an **Administrator** and click the **Lightning Bolt** icon in the top right of the dashboard navigation bar to toggle Simulation Mode. This will inject realistic mock data into the telemetry provider, allowing you to preview charts, alerts, and gauges exactly as they would behave in the real world.

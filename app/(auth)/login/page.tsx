@@ -1,18 +1,32 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Droplets, ArrowLeft, ShieldAlert, User } from "lucide-react";
+import { Droplets, ArrowLeft, AlertCircle } from "lucide-react";
 import { useTelemetry } from "@/components/providers/TelemetryProvider";
 
 export default function LoginPage() {
   const router = useRouter();
   const { setUserRole } = useTelemetry();
+  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = (role: "admin" | "user", e: React.MouseEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setUserRole(role);
-    router.push("/dashboard");
+    setError("");
+
+    if (email === "admin@floodeye.com" && password === "admin") {
+      setUserRole("admin");
+      router.push("/dashboard");
+    } else if (email === "user@floodeye.com" && password === "user") {
+      setUserRole("user");
+      router.push("/dashboard");
+    } else {
+      setError("Invalid email or password. Please try again.");
+    }
   };
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
@@ -39,7 +53,13 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
         <div className="bg-white py-8 px-4 shadow-xl shadow-slate-200/50 border border-slate-200 sm:rounded-3xl sm:px-10">
-          <form className="space-y-6" action="/dashboard">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                {error}
+              </div>
+            )}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-slate-700">
                 Email address
@@ -51,8 +71,10 @@ export default function LoginPage() {
                   type="email"
                   autoComplete="email"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 sm:text-sm transition-all"
-                  placeholder="Enter your email"
+                  placeholder="admin@floodeye.com or user@floodeye.com"
                 />
               </div>
             </div>
@@ -75,8 +97,10 @@ export default function LoginPage() {
                   type="password"
                   autoComplete="current-password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 sm:text-sm transition-all"
-                  placeholder="Enter your password"
+                  placeholder="Enter password"
                 />
               </div>
             </div>
@@ -97,21 +121,13 @@ export default function LoginPage() {
 
             <div className="flex flex-col gap-3 pt-2">
               <button
-                onClick={(e) => handleLogin("user", e)}
+                type="submit"
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors"
               >
-                <User className="w-4 h-4" />
-                Sign in as Resident (Read-only)
-              </button>
-              
-              <button
-                onClick={(e) => handleLogin("admin", e)}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition-colors"
-              >
-                <ShieldAlert className="w-4 h-4" />
-                Sign in as Administrator
+                Sign In
               </button>
             </div>
+            
           </form>
 
           <div className="mt-6">

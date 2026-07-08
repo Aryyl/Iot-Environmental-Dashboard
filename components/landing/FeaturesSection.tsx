@@ -70,7 +70,7 @@ export function FeaturesSection() {
           </div>
           <h2 className="text-4xl font-bold text-[#0c3d5e] mb-4">Built for real hardware. Ready now.</h2>
           <p className="text-[#4a6a7a] text-base max-w-xl mx-auto">
-            AquaSense gives you a production-ready dashboard the moment you plug in your ESP32. No configuration overhead — just real data.
+            FloodEye gives you a production-ready dashboard the moment you plug in your ESP32. No configuration overhead — just real data.
           </p>
         </div>
 

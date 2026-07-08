@@ -128,6 +128,14 @@ export default function SettingsPage() {
                 className={inputCls}
               />
             </FieldRow>
+            <FieldRow label="Low Pressure Alert Threshold (hPa)">
+              <input
+                type="number"
+                value={local.pressureThreshold}
+                onChange={(e) => setLocal({ ...local, pressureThreshold: Number(e.target.value) })}
+                className={inputCls}
+              />
+            </FieldRow>
           </div>
         </div>
 

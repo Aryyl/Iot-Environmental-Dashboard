@@ -124,7 +124,7 @@ export function ScrollVideoLanding() {
             Warn early.<br /><span className="text-blue-600">Save lives.</span>
           </h1>
           <p className="text-base md:text-lg text-slate-600 max-w-lg leading-relaxed mb-10">
-            AquaSense deploys ESP32 sensor networks across flood-prone regions, delivering real-time water level readings and instant community alerts.
+            FloodEye deploys ESP32 sensor networks across flood-prone regions, delivering real-time water level readings and instant community alerts.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link href="/dashboard" className="px-7 py-3.5 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors shadow-sm text-sm">

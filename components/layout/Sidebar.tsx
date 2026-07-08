@@ -8,7 +8,7 @@ import {
   History,
   Bell,
   Settings,
-  Fan
+  Server
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTelemetry } from "@/components/providers/TelemetryProvider";
@@ -16,7 +16,7 @@ import { useTelemetry } from "@/components/providers/TelemetryProvider";
 const navItems = [
   { icon: LayoutDashboard, href: "/dashboard", label: "Dashboard" },
   { icon: BarChart3, href: "/dashboard/analytics", label: "Analytics" },
-  { icon: History, href: "/dashboard/history", label: "Statistics" },
+  { icon: History, href: "/dashboard/history", label: "History" },
   { icon: Bell, href: "/dashboard/alerts", label: "Alerts" },
 ];
 
@@ -26,12 +26,6 @@ export function Sidebar() {
 
   return (
     <aside className="fixed bottom-0 left-0 right-0 z-50 md:relative md:w-24 shrink-0 flex flex-row md:flex-col items-center justify-around md:justify-start md:py-8 bg-white md:rounded-[2.5rem] rounded-t-3xl shadow-[0_-8px_30px_rgb(0,0,0,0.08)] md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-20 md:h-[calc(100vh-3rem)] md:overflow-y-auto md:my-6 md:ml-6 md:sticky md:top-6 no-scrollbar">
-      {/* Brand Icon */}
-      <div className="hidden md:flex mb-12 shrink-0">
-        <div className="w-12 h-12 flex items-center justify-center text-[#355441]">
-          <Fan className="w-8 h-8 animate-spin-slow" style={{ animationDuration: '4s' }} />
-        </div>
-      </div>
 
       {/* Main Navigation */}
       <nav className="flex-1 flex flex-row md:flex-col items-center justify-center md:justify-start gap-2 sm:gap-6 w-full md:w-auto px-4 md:px-0">
@@ -60,6 +54,26 @@ export function Sidebar() {
             </Link>
           );
         })}
+
+        {/* Admin Only: Device Details */}
+        {userRole === "admin" && (
+          <Link
+            href="/dashboard/devices"
+            className={cn(
+              "shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 relative group",
+              pathname === "/dashboard/devices" || pathname.startsWith("/dashboard/devices/")
+                ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25"
+                : "text-zinc-400 hover:text-blue-600 hover:bg-blue-600/5 hover:scale-105 active:scale-95"
+            )}
+            title="Device Details"
+          >
+            <Server className="w-5 h-5" strokeWidth={pathname.includes("/dashboard/devices") ? 2.5 : 2} />
+            
+            <div className="absolute left-16 px-3 py-1.5 bg-slate-900 text-white text-xs font-medium rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+              Device Details
+            </div>
+          </Link>
+        )}
       </nav>
 
       {/* Bottom Actions - Admin Only */}

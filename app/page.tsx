@@ -1,5 +1,4 @@
-import { LandingNav } from "@/components/landing/LandingNav";
-import { ScrollVideoLanding } from "@/components/landing/ScrollVideoLanding";
+import { CanvasSequencePage } from "@/components/landing/CanvasSequencePage";
 
 export const metadata = {
   title: "FloodEye — Flood Relief Monitoring",
@@ -7,10 +6,5 @@ export const metadata = {
 };
 
 export default function Home() {
-  return (
-    <div className="bg-white">
-      <LandingNav />
-      <ScrollVideoLanding />
-    </div>
-  );
+  return <CanvasSequencePage />;
 }

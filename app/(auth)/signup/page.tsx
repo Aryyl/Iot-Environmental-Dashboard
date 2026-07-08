@@ -1,7 +1,59 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { Droplets, ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Droplets, ArrowLeft, AlertCircle, CheckCircle2 } from "lucide-react";
+import { useTelemetry } from "@/components/providers/TelemetryProvider";
 
 export default function SignupPage() {
+  const router = useRouter();
+  const { setUserRole } = useTelemetry();
+  
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (!name || !email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      // Get existing users
+      const usersJson = localStorage.getItem("floodeye_users");
+      const users = usersJson ? JSON.parse(usersJson) : [];
+
+      // Check if email already exists
+      if (users.some((u: any) => u.email === email)) {
+        setError("An account with this email already exists.");
+        return;
+      }
+
+      // Add new user
+      const newUser = { name, email, password, role: "user" };
+      users.push(newUser);
+      localStorage.setItem("floodeye_users", JSON.stringify(users));
+
+      setSuccess(true);
+      
+      // Auto login and redirect after a short delay
+      setTimeout(() => {
+        setUserRole("user");
+        router.push("/dashboard");
+      }, 1500);
+      
+    } catch (err) {
+      setError("An error occurred during sign up.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
       {/* Decorative background blur */}
@@ -21,106 +73,110 @@ export default function SignupPage() {
           Create an account
         </h2>
         <p className="mt-2 text-center text-sm text-slate-600">
-          Start monitoring your community today.
+          Join FloodEye to start monitoring.
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
         <div className="bg-white py-8 px-4 shadow-xl shadow-slate-200/50 border border-slate-200 sm:rounded-3xl sm:px-10">
-          <form className="space-y-6" action="/dashboard">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-slate-700">
-                Full name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 sm:text-sm transition-all"
-                  placeholder="Enter your full name"
-                />
+          {success ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center animate-in fade-in zoom-in duration-500">
+              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
+                <CheckCircle2 className="w-8 h-8" />
               </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Account Created!</h3>
+              <p className="text-slate-600">Logging you in automatically...</p>
             </div>
+          ) : (
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {error && (
+                <div className="p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  {error}
+                </div>
+              )}
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 sm:text-sm transition-all"
-                  placeholder="Enter your email"
-                />
+              <div>
+                <label className="block text-sm font-medium leading-6 text-slate-900">
+                  Full Name
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="block w-full rounded-xl border-0 py-2.5 px-4 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 bg-slate-50 transition-shadow"
+                    placeholder="Jane Doe"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700">
-                Password
-              </label>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 sm:text-sm transition-all"
-                  placeholder="Create a password"
-                />
+              <div>
+                <label className="block text-sm font-medium leading-6 text-slate-900">
+                  Email address
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="block w-full rounded-xl border-0 py-2.5 px-4 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 bg-slate-50 transition-shadow"
+                    placeholder="user@example.com"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center">
-              <input
-                id="terms"
-                name="terms"
-                type="checkbox"
-                required
-                className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600"
-              />
-              <label htmlFor="terms" className="ml-2 block text-sm text-slate-900">
-                I agree to the <a href="#" className="font-semibold text-blue-600 hover:text-blue-500">Terms of Service</a> and <a href="#" className="font-semibold text-blue-600 hover:text-blue-500">Privacy Policy</a>
-              </label>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors"
-              >
-                Sign up
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200" />
+              <div>
+                <label className="block text-sm font-medium leading-6 text-slate-900">
+                  Password
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="block w-full rounded-xl border-0 py-2.5 px-4 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 bg-slate-50 transition-shadow"
+                    placeholder="••••••••"
+                  />
+                </div>
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-2 text-slate-500">Already have an account?</span>
-              </div>
-            </div>
 
+              <div className="flex flex-col gap-3 pt-2">
+                <button
+                  type="submit"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors"
+                >
+                  Create Account
+                </button>
+              </div>
+              
+            </form>
+          )}
+
+          {!success && (
             <div className="mt-6">
-              <Link
-                href="/login"
-                className="flex w-full justify-center rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 transition-colors"
-              >
-                Sign in instead
-              </Link>
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-200" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="bg-white px-2 text-slate-500">Already have an account?</span>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <Link
+                  href="/login"
+                  className="flex w-full justify-center rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 transition-colors"
+                >
+                  Sign in instead
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

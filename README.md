@@ -11,11 +11,12 @@ A modern, highly responsive Next.js web application for monitoring real-time tel
   - **Resident / User View**: Read-only access to vital safety information and alerts.
   - **Administrator View**: Full control over simulation toggles, hardware settings, and critical thresholds.
 - **Dynamic Charts**: Interactive time-series line charts (Recharts) for historical analysis (1h, 24h, 7d, 30d).
-- **GSAP Scroll Landing Page**: A cinematic, high-performance landing page featuring Lenis smooth scrolling and GPU-accelerated video/glassmorphism effects.
+- **GSAP Scroll Landing Page**: A cinematic, high-performance scroll-driven Canvas sequence landing page featuring Lenis smooth scrolling and GPU-accelerated frame rendering.
 - **Mobile-First Responsive Design**: 
   - Dynamic App-style **Bottom Navigation Bar** on mobile devices.
   - Responsive grids, scalable typography, and collapsible headers.
 - **Live Simulation Mode**: Built-in mock data generator for testing the UI without hardware connected.
+- **Persistent Local Authentication**: A fully functional Signup and Login system using `localStorage` to persist custom accounts and login sessions.
 
 ## 🛠️ Tech Stack
 
@@ -61,8 +62,10 @@ Make sure you have Node.js (v20 or higher) and npm/pnpm installed on your machin
 
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the cinematic landing page. Click **Login** to enter the dashboard.
 
-### 🔐 Demo Accounts
-To explore the application's Role-Based Access Control (RBAC), use the following mock credentials when logging in:
+### 🔐 Authentication & Demo Accounts
+You can register your own custom account on the **Sign Up** page. These credentials are saved securely in your browser's local storage and persist across refreshes. 
+
+Alternatively, to quickly explore the application's Role-Based Access Control (RBAC), you can log in using one of the pre-configured mock accounts:
 
 **Administrator Access** (Full control & diagnostics):
 - Email: `admin@floodeye.com`
@@ -87,3 +90,16 @@ Administrators have access to a dedicated **Device Details** page (`/dashboard/d
 
 ## ⚡ Simulation Mode
 If you don't have the ESP32 hardware set up yet, log in as an **Administrator** and click the **Lightning Bolt** icon in the top right of the dashboard navigation bar to toggle Simulation Mode. This will inject realistic mock data into the telemetry provider, allowing you to preview charts, alerts, and gauges exactly as they would behave in the real world.
+
+## 🤝 Project Sponsorship & Team
+This project was carried out under the Technology Innovation Hub (**TIH**) at **IIT Guwahati**.
+
+**Mentors & Coordinators:**
+- **Ashish Kumar Mahato** (Mentor)
+- **Dr. Pratiksha Sharma** (Co-ordinator)
+
+**Project Team:**
+- **Aryyaman Bora** (Frontend and UI Design)
+- **Moharnab Gogoi** (Backend and IoT)
+- **Mayuree Khanikar** (Research and Documentation)
+- **Indrani Gogoi** (Research and Documentation)

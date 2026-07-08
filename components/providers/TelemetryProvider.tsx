@@ -138,7 +138,19 @@ export function TelemetryProvider({ children }: { children: React.ReactNode }) {
   const [deviceStatus, setDeviceStatus] = useState<DeviceStatus>(defaultDeviceStatus);
   const [settings, setSettings] = useState<DashboardSettings>(defaultSettings);
   const [isSimulating, setIsSimulating] = useState(true);
-  const [userRole, setUserRole] = useState<"admin" | "user">("admin");
+  const [userRole, setUserRoleState] = useState<"admin" | "user">("admin");
+
+  useEffect(() => {
+    const savedRole = localStorage.getItem("floodeye_session");
+    if (savedRole === "admin" || savedRole === "user") {
+      setUserRoleState(savedRole);
+    }
+  }, []);
+
+  const setUserRole = (role: "admin" | "user") => {
+    localStorage.setItem("floodeye_session", role);
+    setUserRoleState(role);
+  };
 
   // Pre-fill history with dummy data for initial charts
   useEffect(() => {

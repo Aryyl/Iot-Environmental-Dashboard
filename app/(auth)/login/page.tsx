@@ -18,6 +18,18 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
+    // Check custom localStorage users first
+    const usersJson = localStorage.getItem("floodeye_users");
+    if (usersJson) {
+      const users = JSON.parse(usersJson);
+      const match = users.find((u: any) => u.email === email && u.password === password);
+      if (match) {
+        setUserRole(match.role || "user");
+        router.push("/dashboard");
+        return;
+      }
+    }
+
     if (email === "admin@floodeye.com" && password === "admin") {
       setUserRole("admin");
       router.push("/dashboard");
